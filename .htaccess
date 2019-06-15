@@ -1,0 +1,17 @@
+# Enable rewrite engine and route requests to framework
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} ^/robots.txt
+RewriteRule ^(.*)$ /public/robots.txt [L]
+
+# resources
+RewriteCond %{REQUEST_URI} ^/images/ [OR]
+RewriteCond %{REQUEST_URI} ^/js/ [OR]
+
+RewriteCond %{REQUEST_URI} ^/fonts/ [OR]
+RewriteCond %{REQUEST_URI} ^/css/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [QSA,L]
