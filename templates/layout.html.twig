@@ -1,0 +1,12 @@
+{# templates/layout.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/blog.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/sidebar.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block sidebar %}
+    {{ render(controller( 'App\\Controller\\PageController::sidebar' )) }}
+{% endblock %}

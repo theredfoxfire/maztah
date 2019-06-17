@@ -1,0 +1,10 @@
+.blog-notice { text-align: center; padding: 10px; background: #DFF2BF; border: 1px solid; color: #4F8A10; margin-bottom: 10px; }
+form.blog { font-size: 16px; }
+form.blog div { clear: left; margin-bottom: 10px; }
+form.blog label { float: left; margin-right: 10px; text-align: right; width: 100px; font-weight: bold; vertical-align: top; padding-top: 10px; }
+form.blog input[type="text"],
+form.blog input[type="email"]
+    { width: 80%; line-height: 26px; font-size: 20px; min-height: 26px; }
+form.blog textarea { width: 80%; height: 150px; line-height: 26px; font-size: 20px; }
+form.blog input[type="submit"] { margin-left: 16%; width: 40%; line-height: 26px; font-size: 20px; min-height: 26px; }
+form.blog ul li { color: #ff0000; margin-bottom: 5px; }

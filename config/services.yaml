@@ -5,8 +5,16 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    app.locale: 'en|id'
+    # Contact email address
+    app.emails.contact_email: contact@example.com
 
 services:
+    app.locale_listener:
+        class: App\EventListener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -17,6 +25,9 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    App\Form\:
+        resource: '../src/Form'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

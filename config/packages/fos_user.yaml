@@ -1,0 +1,11 @@
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: App\Entity\User
+    registration:
+        form:
+            type: App\Form\RegistrationType
+    ## Solves bug#4
+    from_email:
+            address: "info@example.com"
+            sender_name: "No Reply"

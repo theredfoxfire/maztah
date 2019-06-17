@@ -1,0 +1,43 @@
+{% trans_default_domain 'FOSUser' %}
+{{form_start(form, {'method': 'POST', 'attr':{'class': 'register'}})}}
+<div class="form-signin">
+
+
+    <div class="login-container">
+            <h1>{{ 'login.register.title'|trans({}, 'messages') }}</h1><br>
+      {{ form_label(form.username) }}
+      {{ form_widget(form.username) }}
+
+    {{ form_errors(form.username) }}
+
+
+
+      {{ form_label(form.plainPassword.first) }}
+      {{ form_widget(form.plainPassword.first) }}
+
+    {{ form_errors(form.plainPassword.first) }}
+
+
+
+      {{ form_label(form.plainPassword.second) }}
+      {{ form_widget(form.plainPassword.second) }}
+
+    {{ form_errors(form.plainPassword.second) }}
+
+
+      {{ form_label(form.email) }}
+      {{ form_widget(form.email) }}
+
+    {{ form_errors(form.email) }}
+
+<br>
+  <div align="center" class="login-help"><br>
+    <button class="btn btn-primary" type="submit" name="action">
+      {{ 'login.submit'|trans({}, 'messages') }}
+      <i class="material-icons"></i>
+    </button>
+    </div>
+  </div>
+</div>
+
+{{ form_end(form) }}

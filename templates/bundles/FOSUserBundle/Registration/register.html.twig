@@ -1,0 +1,10 @@
+{% extends "layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/login.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+            {% include "@FOSUser/Registration/register_content.html.twig" %}
+{% endblock body %}

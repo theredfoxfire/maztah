@@ -1,0 +1,35 @@
+{# templates/contact/contact.html.twig #}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'nav.contact'|trans }}{% endblock%}
+
+{% block body %}
+    <header>
+        <h1>{{ 'nav.contact'|trans }}</h1>
+    </header>
+
+
+{% for flashMessage in app.session.flashbag.get('blog-notice') %}
+    <div class="blog-notice">
+     {   { flashMessage }}
+    </div>
+{% endfor %}
+
+    <p>{{ 'contact.msg'|trans({}, 'contact') }}</p>
+
+
+    <form action="{{ path('contact') }}" method="post" class="blog">
+        {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.subject) }}
+        {{ form_row(form.body) }}
+
+        {{ form_rest(form) }}
+
+        <input type="submit" value="{{ 'contact.submit'|trans({}, 'contact') }}" />
+    </form>
+{% endblock %}
