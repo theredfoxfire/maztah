@@ -60,7 +60,7 @@ class Category
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt()
     {
         $this->createdAt = new \DateTime();
 

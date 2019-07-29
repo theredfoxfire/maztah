@@ -3,36 +3,32 @@
 {% block title %}Question{% endblock %}
 
 {% block body %}
-    <h1>Question</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ question.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ question.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ question.description }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ question.image }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('question_index') }}">back to list</a>
-
-    <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
-
-    {{ include('question/_delete_form.html.twig') }}
+    <div id="fh5co-main">
+        <a href="{{ path('question_index') }}" class="btn btn-primary"><i class="icon-arrow-left2"></i> Back</a>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<h1>{{ question.title }}</h1>
+                    <span style="font-style: italic; font-size: 15px; color: #EF5353;"><i class="icon-user"></i> Posted by {{ question.user.fullname }} - {{ question.createdAt|date }}</span>
+					<p>{{ question.description }}</p>
+				</div>
+        	</div>
+       </div>
+	</div>
+	<div id="fh5co-main">
+		<div class="container">
+			<div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h2>Jawaban:</h2>
+            </div>
+			{% for answer in question.answers %}
+                <hr>
+				<div class="col-md-8 col-md-offset-2" style="margin-bottom: 20px;">
+					<p>{{ answer.description }}</p>
+                    <span style="font-style: italic; margin-top: -40px;float: right; font-size: 15px; color: #EF5353;"><i class="icon-user"></i> Posted by {{ answer.user.fullname }} - {{ answer.createdAt|date }}</span>
+				</div>
+			{% endfor %}
+        	</div>
+       </div>
+	</div>
 {% endblock %}

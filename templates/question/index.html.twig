@@ -1,41 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Question index{% endblock %}
-
 {% block body %}
-    <h1>Question index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>CreatedAt</th>
-                <th>Image</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for question in questions %}
-            <tr>
-                <td>{{ question.id }}</td>
-                <td>{{ question.title }}</td>
-                <td>{{ question.description }}</td>
-                <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ question.image }}</td>
-                <td>
-                    <a href="{{ path('question_show', {'id': question.id}) }}">show</a>
-                    <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('question_new') }}">Create new</a>
+    	 <div id="fh5co-main" data-columns>
+             <div class="col-md-8 col-md-offset-2" style="padding: 5px 15px;">
+                    <input type="text" placeholder="cari pertanyaan" style="width: 100%; padding: 5px 15px;" />
+             </div>
+            {% for data in questions %}
+            <a href="{{ path('question_show', {'id': data.id}) }}" style="text-decoration: none; color: #818892;">
+                <div class="col-md-8 col-md-offset-2" style="border-bottom: solid 1px #e4e4e4;">
+                	    <div class="fh5co-desc">
+                            <h4>{{ data.title }}</h4>
+                            <p>{{ data.description | slice(0, 200) }}...</p>
+                            <span style="font-style: italic; font-size: 12px; color: #EF5353;"><i class="icon-user"></i>{{ data.user.fullname }}</span>
+                            <span style="font-style: italic; font-size: 12px; color: #EF5353; float: right;">
+                            <i class="icon-calendar"></i> {{ data.createdAt | date }}</span>
+                        </div>
+            	</div>
+            </a>
+            {% endfor %}
+        </div>
 {% endblock %}

@@ -46,6 +46,11 @@ class Answer
      */
     private $question;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="answers")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,7 +109,7 @@ class Answer
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt()
     {
         $this->createdAt = new \DateTime();
 
@@ -119,6 +124,18 @@ class Answer
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
