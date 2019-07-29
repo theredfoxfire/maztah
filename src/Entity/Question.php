@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,44 +21,47 @@ class Question
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $fullname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $content;
+    private $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions")
-     * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="questions")
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question")
+     */
+    private $answers;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->answers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFullname(): ?string
-    {
-        return $this->fullname;
-    }
-
-    public function setFullname(string $fullname): self
-    {
-        $this->fullname = $fullname;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -71,39 +76,116 @@ class Question
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getDescription(): ?string
     {
-        return $this->content;
+        return $this->description;
     }
 
-    public function setContent(string $content): self
+    public function setDescription(string $description): self
     {
-        $this->content = $content;
+        $this->description = $description;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getImage(): ?string
     {
-        return $this->user_id;
+        return $this->image;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setImage(?string $image): self
     {
-        $this->user_id = $user_id;
+        $this->image = $image;
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            $category->removeQuestion($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers[] = $answer;
+            $answer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->contains($answer)) {
+            $this->answers->removeElement($answer);
+            // set the owning side to null (unless already changed)
+            if ($answer->getQuestion() === $this) {
+                $answer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function __toString()
+	{
+		return $this->getTitle() ? $this->getTitle() : "";
+	}
 }

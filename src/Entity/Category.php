@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
-class User
+class Category
 {
     /**
      * @ORM\Id()
@@ -21,17 +21,7 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $fullname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
+    private $name;
 
     /**
      * @ORM\Column(type="datetime")
@@ -39,7 +29,7 @@ class User
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="user")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Question", inversedBy="categories")
      */
     private $questions;
 
@@ -53,39 +43,14 @@ class User
         return $this->id;
     }
 
-    public function getFullname(): ?string
+    public function getName(): ?string
     {
-        return $this->fullname;
+        return $this->name;
     }
 
-    public function setFullname(string $fullname): self
+    public function setName(string $name): self
     {
-        $this->fullname = $fullname;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $this->password = $hashed_password;
+        $this->name = $name;
 
         return $this;
     }
@@ -114,7 +79,6 @@ class User
     {
         if (!$this->questions->contains($question)) {
             $this->questions[] = $question;
-            $question->setUser($this);
         }
 
         return $this;
@@ -124,10 +88,6 @@ class User
     {
         if ($this->questions->contains($question)) {
             $this->questions->removeElement($question);
-            // set the owning side to null (unless already changed)
-            if ($question->getUser() === $this) {
-                $question->setUser(null);
-            }
         }
 
         return $this;
@@ -135,6 +95,6 @@ class User
 
     public function __toString()
 	{
-		return $this->getFullname() ? $this->getFullname() : "";
+		return $this->getName() ? $this->getName() : "";
 	}
 }
