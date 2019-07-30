@@ -19,6 +19,48 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findByKeyword($keyword = null) {
+        $entityManager = $this->getEntityManager();
+
+        if ($keyword) {
+            $query = $entityManager->createQuery(
+                'SELECT q
+                FROM App\Entity\Question q
+                WHERE q.description like :keyword or q.title like :keyword
+                ORDER BY q.createdAt DESC'
+            )->setParameter('keyword', '%'.$keyword.'%');
+        } else {
+            $query = $entityManager->createQuery(
+                'SELECT q
+                FROM App\Entity\Question q
+                ORDER BY q.createdAt DESC'
+            );
+        }
+
+        return $query->execute();
+    }
+
+    public function queryByKeyword($keyword = null) {
+        $entityManager = $this->getEntityManager();
+
+        if ($keyword) {
+            $query = $entityManager->createQuery(
+                'SELECT q
+                FROM App\Entity\Question q
+                WHERE q.description like :keyword or q.title like :keyword
+                ORDER BY q.createdAt DESC'
+            )->setParameter('keyword', '%'.$keyword.'%');
+        } else {
+            $query = $entityManager->createQuery(
+                'SELECT q
+                FROM App\Entity\Question q
+                ORDER BY q.createdAt DESC'
+            );
+        }
+
+        return $query;
+    }
+
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

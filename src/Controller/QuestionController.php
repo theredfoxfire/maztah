@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class QuestionController extends AbstractController
@@ -16,10 +17,49 @@ class QuestionController extends AbstractController
     /**
      * @Route("/", name="question_index", methods={"GET"})
      */
-    public function index(QuestionRepository $questionRepository): Response
+    public function index(PaginatorInterface $paginator, Request $request, QuestionRepository $questionRepository): Response
     {
+        $questionQuery = $questionRepository->queryByKeyword();
+        $paginators = $paginator->paginate(
+            $questionQuery,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            20
+        );
         return $this->render('question/index.html.twig', [
-            'questions' => $questionRepository->findAll(),
+            'paginators' => $paginators,
+            'questions' => $questionRepository->findByKeyword(),
+            'keyword' => '',
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="question_search", methods={"GET"})
+     */
+    public function search(PaginatorInterface $paginator, Request $request, QuestionRepository $questionRepository): Response
+    {
+        $token = $request->query->get("token");
+        $keyword = $request->query->get('keyword');
+        $questionQuery = $questionRepository->queryByKeyword($keyword);
+        $paginators = $paginator->paginate(
+            $questionQuery,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            20
+        );
+
+        if ($request->query && !$this->isCsrfTokenValid('myform', $token))
+        {
+            return new Response('Operation not allowed', Response::HTTP_BAD_REQUEST,
+                ['content-type' => 'text/plain']);
+        }
+
+        return $this->render('question/index.html.twig', [
+            'paginators' => $paginators,
+            'questions' => $questionRepository->findByKeyword($keyword),
+            'keyword' => $keyword,
         ]);
     }
 

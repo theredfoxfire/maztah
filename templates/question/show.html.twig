@@ -23,9 +23,9 @@
             </div>
 			{% for answer in question.answers %}
                 <hr>
-				<div class="col-md-8 col-md-offset-2" style="margin-bottom: 20px;">
+				<div class="col-md-8 col-md-offset-2" style="border-bottom: solid 1px #e4e4e4; margin-bottom: 10px;">
 					<p>{{ answer.description }}</p>
-                    <span style="font-style: italic; margin-top: -40px;float: right; font-size: 15px; color: #EF5353;"><i class="icon-user"></i> Posted by {{ answer.user.fullname }} - {{ answer.createdAt|date }}</span>
+                    <span style="font-style: italic; margin-top: -25px;float: right; font-size: 15px; color: #EF5353;"><i class="icon-user"></i> Posted by {{ answer.user.fullname }} - {{ answer.createdAt|date }}</span>
 				</div>
 			{% endfor %}
         	</div>

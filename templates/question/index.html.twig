@@ -4,9 +4,14 @@
 {% block body %}
     	 <div id="fh5co-main" data-columns>
              <div class="col-md-8 col-md-offset-2" style="padding: 5px 15px;">
-                    <input type="text" placeholder="cari pertanyaan" style="width: 100%; padding: 5px 15px;" />
+                 <form class="" action="{{ path('question_search') }}" method="get">
+                    <input type="hidden" name="token" value="{{ csrf_token('myform') }}" />
+                    <input type="text" placeholder="cari pertanyaan" name="keyword" style="width: 85%; padding: 5px 15px;" value="{{ keyword }}" />
+                    <button class="ui button" type="submit" style="padding: 5px 15px;width: 10%;">Cari</button>
+                </form>
+                {% if keyword != '' %}Number of results {{ questions|length }} {% endif %}
              </div>
-            {% for data in questions %}
+            {% for data in paginators %}
             <a href="{{ path('question_show', {'id': data.id}) }}" style="text-decoration: none; color: #818892;">
                 <div class="col-md-8 col-md-offset-2" style="border-bottom: solid 1px #e4e4e4;">
                 	    <div class="fh5co-desc">
@@ -19,5 +24,13 @@
             	</div>
             </a>
             {% endfor %}
+            <div class="col-md-8 col-md-offset-2" style="padding: 5px 15px;">
+                {{ knp_pagination_render(paginators) }}
+            </div>
         </div>
+  <script>
+    function findQuestion() {
+        alert('result');
+    }
+  </script>
 {% endblock %}
